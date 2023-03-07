@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+    emblematic:
+        image: "ghcr.io/Steffo99/emblematic:latest"
+        restart: unless-stopped
+        env_file: 
+            - "stack.env"
