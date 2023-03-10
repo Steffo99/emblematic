@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "emblematic",
             "justMyCode": true,
-            "args": ["--output-file=output.svg", "--background-file=/store/Documents/Workspaces/RYGhub/logos/current/bg.svg", "--foreground-file=/home/steffo/Pictures/Font Awesome/svgs/solid/apple-whole.svg"]
+            "args": ["basic", "--background=/store/Documents/Workspaces/RYGhub/logos/current/watermark.svg", "--icon=/home/steffo/Pictures/Font Awesome/svgs", "--fill=#feedb4", "--output-dir=/home/steffo/Workspaces/Steffo99/emblematic-1/output"]
         }
     ]
 }

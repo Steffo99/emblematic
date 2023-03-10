@@ -96,7 +96,6 @@ nitpicky = False
 # Intersphinx URLs
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3.10", None),
-    "poetry": 
 }
 # Manpages URL
 manpages_url = "https://man.archlinux.org/"

@@ -57,19 +57,24 @@ documentation = "https://emblematic.readthedocs.io/latest/"
 
 # Up to five keywords related to your project.
 # See also: https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#keywords
-#keywords = [
-#    "",
-#    "",
-#    "",
-#    "",
-#    "",
-#]
+keywords = [
+    "icon",
+    "avatar",
+    "emblem",
+    "logo",
+    "symbol",
+]
 
 # Any number of trove classifiers that apply to your project.
 # See the list at: https://pypi.org/classifiers/
 classifiers = [
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+    "Topic :: Multimedia :: Graphics",
+    "Typing :: Typed",
 ]
 
 # ADVANCED: specify the packages exported by your project

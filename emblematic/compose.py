@@ -1,36 +1,43 @@
+"""
+Module containing the functions used to generate ``<svg>`` icons from other ``<svg>`` :class:`bs4.Tag`.
+"""
+
 import bs4
 
 
-def compose_basic(bg: bs4.Tag, fg: bs4.Tag) -> bs4.Tag:
+def compose_basic(background: bs4.Tag, icon: bs4.Tag) -> bs4.Tag:
     """
-    Create a nice icon from the given background ``<svg>`` and the given foreground ``<svg>``.
+    Create a new and nice ``<svg>`` icon from the given background ``<svg>`` and the given foreground ``<svg>``.
     """
 
-    if bg.name != "svg":
+    if background.name != "svg":
         raise ValueError("bg is not a <svg> tag.")
-    if fg.name != "svg":
+    if icon.name != "svg":
         raise ValueError("fg is not a <svg> tag.")
         
-    bg = bg.__copy__()
-    bg.attrs["id"] = "emblematic-bg"
-    bg.attrs["width"] = "100%"
-    bg.attrs["height"] = "100%"
+    background = background.__copy__()
+    background.attrs["id"] = "emblematic-background"
+    background.attrs["width"] = "100%"
+    background.attrs["height"] = "100%"
     
-    fg = fg.__copy__()
-    fg.attrs["id"] = "emblematic-fg"
-    fg.attrs["width"] = "63%"
-    fg.attrs["height"] = "63%"
-    fg.attrs["preserveAspectRation"] = "xMidYMid meet"
-    fg.attrs["transform"] = "translate(185, 185)"    
+    icon = icon.__copy__()
+    icon.attrs["id"] = "emblematic-icon"
+    icon.attrs["width"] = "63%"
+    icon.attrs["height"] = "63%"
+    icon.attrs["preserveAspectRatio"] = "xMidYMid meet"
+    icon.attrs["transform"] = "translate(370, 370)"    
     
     doc = bs4.BeautifulSoup("""
-    <?xml version="1.0" encoding="UTF-8"?>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
     </svg>
-    """)
+    """, features="lxml-xml")
     container: bs4.Tag = doc.svg
-    container.append(bg)
-    container.append(fg)
+    container.append(background)
+    container.append(icon)
 
     return doc
     
+
+__all__ = (
+    "compose_basic",
+)

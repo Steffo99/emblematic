@@ -40,7 +40,7 @@ Using pip
         $ # On Fish
         $ source .venv/bin/activate.fish
 
-    .. code-block:: wincon
+    .. code-block:: doscon
 
         > ; On Windows
         > .venv/Scripts/activate.ps1
@@ -50,7 +50,7 @@ Using pip
 
 To install |this| using :mod:`pip`:
 
-#. Add |this| to your `requirements.txt` file:
+#. Add |this| to your ``requirements.txt`` file:
 
     .. code-block:: text
         
@@ -74,6 +74,7 @@ To install |this| using :mod:`pipx`:
     .. code-block:: console
         
         $ pipx install emblematic
+
 
 ===========
 From source
@@ -133,7 +134,7 @@ To contribute to |this|, you need to setup the project's environment using :mod:
     
     .. hint::
 
-        Setting ``virtualenvs.in-project`` to :data:`True` is recommended!
+        It is recommended to set ``virtualenvs.in-project`` to :data:`True`!
 
         .. code-block:: console
 

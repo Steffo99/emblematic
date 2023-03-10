@@ -1,37 +1,84 @@
+"""
+Command-line interface for :mod:`emblematic`.
+
+Implemented with :mod:`click`.
+"""
+
 import click
 import bs4
+import pathlib
+import cairosvg
+
+from .files import get_svgs
+from .compose import compose_basic
 
 
-@click.command()
+@click.group()
+def main():
+    pass
+
+
+@main.command("basic")
 @click.option(
-    "-o", "--output-file", "output_file",
-    help="File to output the icon to.", 
-    required=True,
-    type=click.File(mode="w"),
-)
-@click.option(
-    "-b", "--background-file", "background_file",
-    help="File to use as the background of the icon.",
-    required=True,
+    "-b", "--background", "bg_file",
     type=click.File(mode="r"),
+    required=True,
+    help="SVG file to be used as background.",
 )
 @click.option(
-    "-f", "--foreground-file", "foreground_file",
-    help="File to use as the foreground of the icon.",
+    "-i", "--icon", "icon_paths",
+    type=click.Path(exists=True),
     required=True,
-    type=click.File(mode="r"),
+    multiple=True,
+    help="SVG files or directories of files to be used as foreground.",
 )
-def main(output_file, background_file, foreground_file):
-    background_soup = bs4.BeautifulSoup(background_file, "lxml-xml")
-    foreground_soup = bs4.BeautifulSoup(foreground_file, "lxml-xml")
+@click.option(
+    "-f", "--fill", "icon_fill",
+    type=str,
+    required=True,
+    help="The color to fill icons with."
+)
+@click.option(
+    "-o", "--output-dir", "output_dir",
+    type=click.Path(exists=True, file_okay=False, dir_okay=True),
+    required=True,
+    help="The directory where output files should be placed in."
+)
+def basic(bg_file, icon_paths, icon_fill, output_dir):
+    icon_paths = map(pathlib.Path, icon_paths)
+    icon_paths = map(get_svgs, icon_paths)
+    icon_paths = sum(icon_paths, start=[])
 
-    foreground_tag = foreground_soup.path
-    foreground_scaled_tag = bs4.BeautifulSoup("""<g id="icon" transform="matrix(2,0,0,2,-4.3209502e-5,512)"></g>""", "lxml-xml")
-    foreground_scaled_tag.g.append(foreground_tag)
+    output_dir = pathlib.Path(output_dir)
 
-    background_soup.svg.append(foreground_scaled_tag)
+    bg_doc = bs4.BeautifulSoup(bg_file, features="lxml-xml")
+    bg = bg_doc.svg
 
-    output_file.write(background_soup.prettify())
+    for icon_path in icon_paths:
+        icon_path: pathlib.Path
+        output_path = output_dir.joinpath(f"{icon_path.stem}.png")
+
+        with open(icon_path) as icon_file:
+            click.echo(icon_path, nl=False)
+            icon_doc = bs4.BeautifulSoup(icon_file, features="lxml-xml")
+            icon = icon_doc.svg
+            icon.path.attrs["fill"] = icon_fill
+        
+        click.echo(" → ", nl=False)
+        svg_doc = compose_basic(background=bg, icon=icon)
+
+        click.echo(" → ", nl=False)
+        svg_bytes = bytes(svg_doc.prettify(), encoding="utf8")
+        
+        click.echo(" → ", nl=False)
+        png_bytes = cairosvg.svg2png(bytestring=svg_bytes)
+
+        with open(output_path, mode="wb") as output_file:
+            click.echo(output_path, nl=False)
+            output_file.write(png_bytes)
+
+        click.echo()
+
 
 
 if __name__ == "__main__":
