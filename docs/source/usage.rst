@@ -19,13 +19,13 @@ It is composed by:
 
 1. taking the SVG background image contained in the file given as the ``--background`` option, such as the following:
 
-    .. figure:: ryg6-bg.svg
+    .. figure:: ryg6-bg.png
         :width: 150
         :height: 150
 
 2. overlaying a rescaled version of the SVG foreground icon contained in the file given as the ``--icon`` option, filled with the color given in the ``--fill`` option, such as the following:
 
-    .. figure:: fontawesome-ice-cream.svg
+    .. figure:: fontawesome-ice-cream.png
         :width: 150
         :height: 150
 
@@ -34,6 +34,13 @@ It is composed by:
     .. figure:: ryg6-ice-cream.png
         :width: 150
         :height: 150
+
+
+.. note::
+    
+    The previous images are SVG files converted to PNG, as ReadTheDocs doesn't seem to work correctly with SVG files.
+
+    You can find the original SVG files in the code repository!
 
 
 ---------------------------------
