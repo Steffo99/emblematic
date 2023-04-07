@@ -25,7 +25,7 @@ def compose_basic(background: bs4.Tag, icon: bs4.Tag, width: int, height: int) -
     icon.attrs["width"] = "63%"
     icon.attrs["height"] = "63%"
     icon.attrs["preserveAspectRatio"] = "xMidYMid meet"
-    icon.attrs["transform"] = f"translate({width * 0.37}, {height * 0.37})"    
+    icon.attrs["transform"] = f"translate({width * 0.37 / 2}, {height * 0.37 / 2})"    
     
     doc = bs4.BeautifulSoup(f"""
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
