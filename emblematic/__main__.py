@@ -56,7 +56,7 @@ def main():
     default=2000,
     help="The height the output files should have."
 )
-def basic(bg_file, icon_paths, icon_fill, output_dir):
+def basic(bg_file, icon_paths, icon_fill, output_dir, width, height):
     icon_paths = map(pathlib.Path, icon_paths)
     icon_paths = map(get_svgs, icon_paths)
     icon_paths = sum(icon_paths, start=[])
