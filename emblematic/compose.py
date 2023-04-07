@@ -5,7 +5,7 @@ Module containing the functions used to generate ``<svg>`` icons from other ``<s
 import bs4
 
 
-def compose_basic(background: bs4.Tag, icon: bs4.Tag) -> bs4.Tag:
+def compose_basic(background: bs4.Tag, icon: bs4.Tag, width: int, height: int) -> bs4.Tag:
     """
     Create a new and nice ``<svg>`` icon from the given background ``<svg>`` and the given foreground ``<svg>``.
     """
@@ -25,10 +25,10 @@ def compose_basic(background: bs4.Tag, icon: bs4.Tag) -> bs4.Tag:
     icon.attrs["width"] = "63%"
     icon.attrs["height"] = "63%"
     icon.attrs["preserveAspectRatio"] = "xMidYMid meet"
-    icon.attrs["transform"] = "translate(370, 370)"    
+    icon.attrs["transform"] = f"translate({width * 0.37}, {height * 0.37})"    
     
-    doc = bs4.BeautifulSoup("""
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 2000">
+    doc = bs4.BeautifulSoup(f"""
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
     </svg>
     """, features="lxml-xml")
     container: bs4.Tag = doc.svg

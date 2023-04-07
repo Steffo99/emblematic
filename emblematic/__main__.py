@@ -36,13 +36,25 @@ def main():
     "-f", "--fill", "icon_fill",
     type=str,
     required=True,
-    help="The color to fill icons with."
+    help="The color to fill icons with.",
 )
 @click.option(
     "-o", "--output-dir", "output_dir",
     type=click.Path(exists=True, file_okay=False, dir_okay=True),
     required=True,
-    help="The directory where output files should be placed in."
+    help="The directory where output files should be placed in.",
+)
+@click.option(
+    "-w", "--width", "width",
+    type=int,
+    default=2000,
+    help="The width the output files should have.",
+)
+@click.option(
+    "-h", "--height", "height",
+    type=int,
+    default=2000,
+    help="The height the output files should have."
 )
 def basic(bg_file, icon_paths, icon_fill, output_dir):
     icon_paths = map(pathlib.Path, icon_paths)
@@ -65,7 +77,7 @@ def basic(bg_file, icon_paths, icon_fill, output_dir):
             icon.path.attrs["fill"] = icon_fill
         
         click.echo(" → ", nl=False)
-        svg_doc = compose_basic(background=bg, icon=icon)
+        svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height)
 
         click.echo(" → ", nl=False)
         svg_bytes = bytes(svg_doc.prettify(), encoding="utf8")
