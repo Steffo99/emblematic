@@ -56,7 +56,14 @@ def main():
     default=2000,
     help="The height the output files should have."
 )
-def basic(bg_file, icon_paths, icon_fill, output_dir, width, height):
+@click.option(
+    "--keep-svg/--discard-svg", "keep_svg",
+    type=bool,
+    default=False,
+    is_flag=True,
+    help="If the SVG files used to generate the PNG files should be saved. Warning: they won't be supported by many renderers!"
+)
+def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
     icon_paths = map(pathlib.Path, icon_paths)
     icon_paths = map(get_svgs, icon_paths)
     icon_paths = sum(icon_paths, start=[])
@@ -68,7 +75,8 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height):
 
     for icon_path in icon_paths:
         icon_path: pathlib.Path
-        output_path = output_dir.joinpath(f"{icon_path.stem}.png")
+        output_svg_path = output_dir.joinpath(f"{icon_path.stem}.svg")
+        output_png_path = output_dir.joinpath(f"{icon_path.stem}.png")
 
         with open(icon_path) as icon_file:
             click.echo(icon_path, nl=False)
@@ -77,16 +85,19 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height):
             icon.path.attrs["fill"] = icon_fill
         
         click.echo(" → ", nl=False)
-        svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height)
+        svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height).prettify()
 
+        if keep_svg:
+            with open(output_svg_path, mode="w") as output_file:
+                click.echo(output_svg_path, nl=False)
+                output_file.write(svg_doc)
+            
         click.echo(" → ", nl=False)
-        svg_bytes = bytes(svg_doc.prettify(), encoding="utf8")
-        
-        click.echo(" → ", nl=False)
+        svg_bytes = bytes(svg_doc, encoding="utf8")
         png_bytes = cairosvg.svg2png(bytestring=svg_bytes)
 
-        with open(output_path, mode="wb") as output_file:
-            click.echo(output_path, nl=False)
+        with open(output_png_path, mode="wb") as output_file:
+            click.echo(output_png_path, nl=False)
             output_file.write(png_bytes)
 
         click.echo()
