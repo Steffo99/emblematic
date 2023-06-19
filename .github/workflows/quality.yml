@@ -8,4 +8,9 @@ on:
 
 jobs:
   codeql:
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+    
     uses: Steffo99/.github/.github/workflows/quality-python-codeql.yml@main
