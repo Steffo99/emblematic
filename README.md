@@ -1,4 +1,4 @@
-# ![](media/icon.png) `emblematic`
+# ![](media/icon-round-100x100.png) `emblematic`
 
 Generates emblems from an icon and a background
 
