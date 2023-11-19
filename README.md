@@ -1,12 +1,10 @@
-# `emblematic` [![Available on PyPI](https://img.shields.io/pypi/v/emblematic)](https://pypi.org/project/emblematic/)
+# ![](media/icon.png) `emblematic`
 
-Simple icon generator
+Generates emblems from an icon and a background
 
-\[ **[Documentation]** | **[PyPI]** | [Repository] \]
+## Links
 
-<!-- Add an image or some examples here, if available! -->
-
-
-[Documentation]: https://emblematic.readthedocs.io/latest/
-[PyPI]: https://pypi.org/project/emblematic
-[Repository]: https://github.com/Steffo99/emblematic/
+[![PyPI](https://img.shields.io/pypi/v/emblematic)](https://pypi.org/project/emblematic)
+ 
+[![Documentation](https://img.shields.io/readthedocs/emblematic
+)](https://emblematic.readthedocs.io/latest/)

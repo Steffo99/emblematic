@@ -147,8 +147,8 @@ lxml = "^4.9.2"
 # Same as above, but these dependencies are installed only if the project is being installed in development mode.
 # They are excluded from the final build.
 
-Sphinx = "^4.3.2"
-sphinx-rtd-theme = "^1.0.0"
+Sphinx = "^7.2.6"
+sphinx-rtd-theme = "^1.2.0"
 
 
 
