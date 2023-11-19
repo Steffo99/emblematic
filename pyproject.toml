@@ -25,7 +25,7 @@ name = "emblematic"
 version = "1.0.0"
 
 # A brief, one-sentence description about your project.
-description = "Generates emblems from an icon and a background"
+description = "Generate emblems from an icon and a background"
 
 # A list of the authors of the project.
 authors = [

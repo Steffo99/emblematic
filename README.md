@@ -1,6 +1,6 @@
 # ![](media/icon-round-100x100.png) Emblematic
 
-Generates emblems from an icon and a background
+Generate emblems from an icon and a background
 
 ## Links
 
