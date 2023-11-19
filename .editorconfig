@@ -14,3 +14,6 @@ insert_final_newline = true
 # Python (sadly) strongly recommends the usage of 4 spaces as indentation.
 indent_style = space
 indent_size = 4
+
+[*.yml]
+indent_size = 2
