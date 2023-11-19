@@ -21,8 +21,11 @@ jobs:
 
   pypi:
     uses: Steffo99/.github/.github/workflows/release-poetry-pypi.yml@main
+    permissions:
+      id-token: write
     needs:
       - test
       - build
-    secrets:
-      PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+    environment:
+      name: "PyPI"
+      url: "https://pypi.org/project/emblematic/"
