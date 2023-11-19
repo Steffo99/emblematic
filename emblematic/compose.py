@@ -14,19 +14,19 @@ def compose_basic(background: bs4.Tag, icon: bs4.Tag, width: int, height: int) -
         raise ValueError("bg is not a <svg> tag.")
     if icon.name != "svg":
         raise ValueError("fg is not a <svg> tag.")
-        
+
     background = background.__copy__()
     background.attrs["id"] = "emblematic-background"
     background.attrs["width"] = "100%"
     background.attrs["height"] = "100%"
-    
+
     icon = icon.__copy__()
     icon.attrs["id"] = "emblematic-icon"
     icon.attrs["width"] = "63%"
     icon.attrs["height"] = "63%"
     icon.attrs["preserveAspectRatio"] = "xMidYMid meet"
-    icon.attrs["transform"] = f"translate({width * 0.37 / 2}, {height * 0.37 / 2})"    
-    
+    icon.attrs["transform"] = f"translate({width * 0.37 / 2}, {height * 0.37 / 2})"
+
     doc = bs4.BeautifulSoup(f"""
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}">
     </svg>
@@ -36,7 +36,7 @@ def compose_basic(background: bs4.Tag, icon: bs4.Tag, width: int, height: int) -
     container.append(icon)
 
     return doc
-    
+
 
 __all__ = (
     "compose_basic",

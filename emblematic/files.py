@@ -13,7 +13,7 @@ def get_svgs(path: pathlib.Path):
         raise ValueError("Given path does not exist.")
     if not path.is_dir():
         return [path]
-    
+
     return list(path.glob("**/*.svg"))
 
 

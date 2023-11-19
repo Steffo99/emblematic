@@ -4,13 +4,14 @@ Command-line interface for :mod:`emblematic`.
 Implemented with :mod:`click`.
 """
 
-import click
-import bs4
 import pathlib
-import cairosvg
 
-from .files import get_svgs
+import bs4
+import cairosvg
+import click
+
 from .compose import compose_basic
+from .files import get_svgs
 
 
 @click.group()
@@ -83,7 +84,7 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
             icon_doc = bs4.BeautifulSoup(icon_file, features="lxml-xml")
             icon = icon_doc.svg
             icon.path.attrs["fill"] = icon_fill
-        
+
         click.echo(" → ", nl=False)
         svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height).prettify()
 
@@ -91,7 +92,7 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
             with open(output_svg_path, mode="w") as output_file:
                 click.echo(output_svg_path, nl=False)
                 output_file.write(svg_doc)
-            
+
         click.echo(" → ", nl=False)
         svg_bytes = bytes(svg_doc, encoding="utf8")
         png_bytes = cairosvg.svg2png(bytestring=svg_bytes)
@@ -101,7 +102,6 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
             output_file.write(png_bytes)
 
         click.echo()
-
 
 
 if __name__ == "__main__":
