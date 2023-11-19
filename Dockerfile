@@ -20,13 +20,8 @@ ENTRYPOINT ["poetry", "run", "python", "-m", "emblematic"]
 CMD []
 
 FROM entrypoint AS labels
-# TODO: Set a Docker image title
 LABEL org.opencontainers.image.title="emblematic"
-# TODO: Set a Docker image decription
-LABEL org.opencontainers.image.description="Simple icon generator"
-# TODO: Set a Docker image license
+LABEL org.opencontainers.image.description="Generate emblems from an icon and a background"
 LABEL org.opencontainers.image.licenses="AGPL-3.0-or-later"
-# TODO: Set a Docker image URL
 LABEL org.opencontainers.image.url="https://github.com/Steffo99/emblematic/"
-# TODO: Set the Docker image authors
 LABEL org.opencontainers.image.authors="Stefano Pigozzi <me@steffo.eu>"
