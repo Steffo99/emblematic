@@ -40,7 +40,7 @@ maintainers = [
 
 # The license of the package.
 # Uses SPDX format: https://spdx.org/licenses/
-license = "AGPL-3.0-or-later"
+license = "EUPL-1.2"
 
 # The README file.
 readme = "README.md"
