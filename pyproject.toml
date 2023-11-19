@@ -22,7 +22,7 @@ build-backend = "poetry.core.masonry.api"
 name = "emblematic"
 
 # The version of the package.
-version = "0.1.0"
+version = "1.0.0"
 
 # A brief, one-sentence description about your project.
 description = "Simple icon generator"
