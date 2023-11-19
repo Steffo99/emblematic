@@ -26,10 +26,3 @@ jobs:
       - build
     secrets:
       PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
-
-  portainer:
-    uses: Steffo99/.github/.github/workflows/deploy-portainer.yml@main
-    needs:
-      - ghcrio
-    secrets:
-      PORTAINER_HOOK_URL: ${{ secrets.PORTAINER_HOOK_URL }}
