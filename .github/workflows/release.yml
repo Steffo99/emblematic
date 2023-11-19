@@ -19,10 +19,23 @@ jobs:
       - test
       - build
 
+  # Must be explicit due to how Trusted Publishing works on PyPI!
   pypi:
-    uses: Steffo99/.github/.github/workflows/release-poetry-pypi.yml@main
+    name: "Publish release on PyPI"
+    runs-on: ubuntu-latest
+
     permissions:
       id-token: write
+
     needs:
       - test
       - build
+    steps:
+      - name: "Download built packages from artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: "Build"
+          path: dist/
+
+      - name: "Upload package"
+        uses: pypa/gh-action-pypi-publish@release/v1
