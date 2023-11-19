@@ -26,6 +26,3 @@ jobs:
     needs:
       - test
       - build
-    environment:
-      name: "PyPI"
-      url: "https://pypi.org/project/emblematic/"
