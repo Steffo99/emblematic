@@ -7,9 +7,6 @@
 
 # Add your own ignores here!
 
-fontawesome*/
-*.svg
-
 
 ##################
 # Python ignores #
