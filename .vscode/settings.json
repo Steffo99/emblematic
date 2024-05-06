@@ -1,13 +1,3 @@
 {
-    "files.exclude": {
-        ".idea/": true,
-        "**/*.iml": true,
-        "**/.pytest_cache/": true,
-        "**/__pycache__/": true,
-        ".venv/": true,
-        "dist/": true,
-        "out/": true,
-        "poetry.lock": true,
-    },
     "python.analysis.extraPaths": ["./emblematic"],
 }
