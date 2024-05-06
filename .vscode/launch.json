@@ -1,16 +1,4 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Python: Module",
-            "type": "python",
-            "request": "launch",
-            "module": "emblematic",
-            "justMyCode": true,
-            "args": ["basic", "--background=/store/Documents/Workspaces/RYGhub/logos/current/watermark.svg", "--icon=/home/steffo/Pictures/Font Awesome/svgs", "--fill=#feedb4", "--output-dir=/home/steffo/Workspaces/Steffo99/emblematic-1/output"]
-        }
-    ]
+    "configurations": []
 }
