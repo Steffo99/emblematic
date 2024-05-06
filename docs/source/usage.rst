@@ -60,3 +60,14 @@ Multiple emblem files can be generated at once.
     .. code-block:: console
 
         $ emblematic basic --background="./bg.svg" --icon="./fontawesome/" --fill="#feedb4" --output-dir="./output/"
+
+
+-----------
+Drop shadow
+-----------
+
+A drop shadow can be added to icons by passing the ``--icon-shadow-fill``, ``--icon-shadow-x``, ``--icon-shadow-y`` and ``--icon-shadow-blur`` parameters.
+
+.. code-block:: console
+
+    $ emblematic basic --background="./bg.svg" --icon="./icon.svg" --fill="#feedb4" --output-dir="./output/" --icon-shadow-fill="#000000" --icon-shadow-x="8" --icon-shadow-y="-4" --icon-shadow-blur="16"

@@ -5,9 +5,9 @@ Implemented with :mod:`click`.
 """
 
 import pathlib
+import subprocess
 
 import bs4
-import cairosvg
 import click
 
 from .compose import compose_basic
@@ -58,13 +58,33 @@ def main():
     help="The height the output files should have."
 )
 @click.option(
-    "--keep-svg/--discard-svg", "keep_svg",
-    type=bool,
-    default=False,
-    is_flag=True,
-    help="If the SVG files used to generate the PNG files should be saved. Warning: they won't be supported by many renderers!"
+    "--icon-shadow-fill", "icon_shadow_fill",
+    type=str,
+    default=None,
+    help="The color that the drop shadow added to the icon should have."
 )
-def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
+@click.option(
+    "--icon-shadow-x", "icon_shadow_x",
+    type=str,
+    default=None,
+    help="The horizontal offset that the drop shadow will have relative to the icon."
+)
+@click.option(
+    "--icon-shadow-y", "icon_shadow_y",
+    type=str,
+    default=None,
+    help="The vertical offset that the drop shadow will have relative to the icon."
+)
+@click.option(
+    "--icon-shadow-blur", "icon_shadow_blur",
+    type=str,
+    default=None,
+    help="The radius of the blur applied to the shadow."
+)
+def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, icon_shadow_fill, icon_shadow_x, icon_shadow_y, icon_shadow_blur):
+    if 0 < sum(map(bool, [icon_shadow_fill, icon_shadow_x, icon_shadow_y, icon_shadow_blur])) < 4:
+        raise click.ClickException("--icon-shadow-* options cannot be partially set.")
+
     icon_paths = map(pathlib.Path, icon_paths)
     icon_paths = map(get_svgs, icon_paths)
     icon_paths = sum(icon_paths, start=[])
@@ -85,23 +105,40 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, keep_svg):
             icon = icon_doc.svg
             icon.path.attrs["fill"] = icon_fill
 
+        if icon_shadow_fill:
+            icon.path.attrs["filter"] = "url(#emblematic-filter)"
+            defs_doc = bs4.BeautifulSoup(f"""
+                <defs>
+                    <filter id="emblematic-filter" color-interpolation-filters="sRGB">
+                        <feFlood flood-color="{icon_shadow_fill}" in="SourceGraphic" result="flood"/>
+                        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="{icon_shadow_blur}"/>
+                        <feOffset dx="{icon_shadow_x}" dy="{icon_shadow_y}" in="blur" result="offset"/>
+                        <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
+                        <feComposite in="SourceGraphic" in2="comp1" result="comp2"/>
+                    </filter>
+                </defs>
+            """, features="lxml-xml")
+            icon.insert(0, defs_doc)
+
         click.echo(" → ", nl=False)
         svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height).prettify()
 
-        if keep_svg:
-            with open(output_svg_path, mode="w") as output_file:
-                click.echo(output_svg_path, nl=False)
-                output_file.write(svg_doc)
+        with open(output_svg_path, mode="w") as output_file:
+            click.echo(output_svg_path, nl=False)
+            output_file.write(svg_doc)
 
         click.echo(" → ", nl=False)
-        svg_bytes = bytes(svg_doc, encoding="utf8")
-        png_bytes = cairosvg.svg2png(bytestring=svg_bytes)
 
-        with open(output_png_path, mode="wb") as output_file:
-            click.echo(output_png_path, nl=False)
-            output_file.write(png_bytes)
+        subprocess.run([
+            "inkscape",
+            output_svg_path,
+            "--export-type=png",
+            f"--export-filename={output_png_path}",
+            f"--export-width={width}",
+            f"--export-height={height}",
+        ])
 
-        click.echo()
+        click.echo(output_png_path, nl=False)
 
 
 if __name__ == "__main__":
