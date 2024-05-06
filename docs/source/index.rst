@@ -14,6 +14,7 @@ Table of contents
 
 .. toctree::
    
+   prerequisites
    installation
    usage
    api
