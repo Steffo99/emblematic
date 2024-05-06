@@ -1,4 +1,10 @@
+<center> 
+
+![](.media/icon-128x128_round.png) 
+
 # Emblematic
+
+</center>
 
 Generate emblems from an icon and a background
 
