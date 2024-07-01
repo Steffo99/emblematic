@@ -85,60 +85,63 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, icon_shadow
     if 0 < sum(map(bool, [icon_shadow_fill, icon_shadow_x, icon_shadow_y, icon_shadow_blur])) < 4:
         raise click.ClickException("--icon-shadow-* options cannot be partially set.")
 
-    icon_paths = map(pathlib.Path, icon_paths)
-    icon_paths = map(get_svgs, icon_paths)
-    icon_paths = sum(icon_paths, start=[])
-
     output_dir = pathlib.Path(output_dir)
 
     bg_doc = bs4.BeautifulSoup(bg_file, features="lxml-xml")
     bg = bg_doc.svg
 
+    icon_paths = map(pathlib.Path, icon_paths)
     for icon_path in icon_paths:
-        icon_path: pathlib.Path
-        output_svg_path = output_dir.joinpath(f"{icon_path.stem}.svg")
-        output_png_path = output_dir.joinpath(f"{icon_path.stem}.png")
+        icon_svgs = get_svgs(icon_path)
 
-        with open(icon_path) as icon_file:
-            click.echo(icon_path, nl=False)
-            icon_doc = bs4.BeautifulSoup(icon_file, features="lxml-xml")
-            icon = icon_doc.svg
-            icon.path.attrs["fill"] = icon_fill
+        for icon_svg in icon_svgs:
+            icon_svg: pathlib.Path
+            relative_path = icon_svg.relative_to(icon_path)
+            output_svg_path = output_dir.joinpath(f"{relative_path.parent}/{relative_path.stem}.svg")
+            output_png_path = output_dir.joinpath(f"{relative_path.parent}/{relative_path.stem}.png")
 
-        if icon_shadow_fill:
-            icon.path.attrs["filter"] = "url(#emblematic-filter)"
-            defs_doc = bs4.BeautifulSoup(f"""
-                <defs>
-                    <filter id="emblematic-filter" color-interpolation-filters="sRGB">
-                        <feFlood flood-color="{icon_shadow_fill}" in="SourceGraphic" result="flood"/>
-                        <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="{icon_shadow_blur}"/>
-                        <feOffset dx="{icon_shadow_x}" dy="{icon_shadow_y}" in="blur" result="offset"/>
-                        <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
-                        <feComposite in="SourceGraphic" in2="comp1" result="comp2"/>
-                    </filter>
-                </defs>
-            """, features="lxml-xml")
-            icon.insert(0, defs_doc)
+            output_svg_path.parent.mkdir(exist_ok=True, parents=True)
 
-        click.echo(" → ", nl=False)
-        svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height).prettify()
+            with open(icon_svg) as icon_file:
+                click.echo(icon_svg, nl=False)
+                icon_doc = bs4.BeautifulSoup(icon_file, features="lxml-xml")
+                icon = icon_doc.svg
+                icon.path.attrs["fill"] = icon_fill
 
-        with open(output_svg_path, mode="w") as output_file:
-            click.echo(output_svg_path, nl=False)
-            output_file.write(svg_doc)
+            if icon_shadow_fill:
+                icon.path.attrs["filter"] = "url(#emblematic-filter)"
+                defs_doc = bs4.BeautifulSoup(f"""
+                    <defs>
+                        <filter id="emblematic-filter" color-interpolation-filters="sRGB">
+                            <feFlood flood-color="{icon_shadow_fill}" in="SourceGraphic" result="flood"/>
+                            <feGaussianBlur in="SourceGraphic" result="blur" stdDeviation="{icon_shadow_blur}"/>
+                            <feOffset dx="{icon_shadow_x}" dy="{icon_shadow_y}" in="blur" result="offset"/>
+                            <feComposite in="flood" in2="offset" operator="in" result="comp1"/>
+                            <feComposite in="SourceGraphic" in2="comp1" result="comp2"/>
+                        </filter>
+                    </defs>
+                """, features="lxml-xml")
+                icon.insert(0, defs_doc)
 
-        click.echo(" → ", nl=False)
+            click.echo(" → ", nl=False)
+            svg_doc = compose_basic(background=bg, icon=icon, width=width, height=height).prettify()
 
-        subprocess.run([
-            "inkscape",
-            output_svg_path,
-            "--export-type=png",
-            f"--export-filename={output_png_path}",
-            f"--export-width={width}",
-            f"--export-height={height}",
-        ])
+            with open(output_svg_path, mode="w") as output_file:
+                click.echo(output_svg_path, nl=False)
+                output_file.write(svg_doc)
 
-        click.echo(output_png_path, nl=False)
+            click.echo(" → ", nl=False)
+
+            subprocess.run([
+                "inkscape",
+                output_svg_path,
+                "--export-type=png",
+                f"--export-filename={output_png_path}",
+                f"--export-width={width}",
+                f"--export-height={height}",
+            ])
+
+            click.echo(output_png_path, nl=False)
 
 
 if __name__ == "__main__":
