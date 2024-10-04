@@ -141,7 +141,7 @@ def basic(bg_file, icon_paths, icon_fill, output_dir, width, height, icon_shadow
                 f"--export-height={height}",
             ])
 
-            click.echo(output_png_path, nl=False)
+            click.echo(output_png_path)
 
 
 if __name__ == "__main__":
